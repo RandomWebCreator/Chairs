@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Chairs</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            font-family: sans-serif;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        .instructions {
+            position: absolute;
+            top: 20px;
+            width: 100%;
+            text-align: center;
+            color: #888888;
+            pointer-events: none;
+            z-index: 10;
+            transition: opacity 0.5s ease;
+            opacity: 1;
+        }
+
+        .instructions.hidden {
+            opacity: 0;
+        }
+
+        .chair {
+            position: absolute;
+            width: 100px;
+            height: auto;
+            cursor: pointer;
+            transform: translate(-50%, -100%); 
+        }
+    </style>
+</head>
+<body>
+
+    <div class="instructions" id="info-text">
+        <h1>Chairs</h1>
+        <p>Touch the screen and chairs appear, touch them to make them disappear</p>
+    </div>
+
+    <script>
+        // Immagine stabile direttamente dai server di Wikimedia
+        const chairImageUrl = 'https://upload.wikimedia.org/wikipedia/commons/3/3a/Chair_isometric_projection.png';
+        
+        let firstChairPlaced = false;
+
+        document.addEventListener('click', function(event) {
+            
+            if (event.target.classList.contains('chair')) {
+                return;
+            }
+
+            if (!firstChairPlaced) {
+                document.getElementById('info-text').classList.add('hidden');
+                firstChairPlaced = true;
+            }
+
+            const x = event.clientX;
+            const y = event.clientY;
+
+            const newChairImg = document.createElement('img');
+            newChairImg.classList.add('chair');
+            newChairImg.src = chairImageUrl;
+
+            newChairImg.style.left = x + 'px';
+            newChairImg.style.top = y + 'px';
+
+            newChairImg.addEventListener('click', function(chairEvent) {
+                chairEvent.stopPropagation();
+                newChairImg.remove();
+            });
+
+            document.body.appendChild(newChairImg);
+        });
+    </script>
+
+</body>
+</html>
