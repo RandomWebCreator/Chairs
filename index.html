@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Chairs</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            font-family: sans-serif;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        .instructions {
+            position: absolute;
+            top: 20px;
+            width: 100%;
+            text-align: center;
+            color: #888888;
+            pointer-events: none;
+            z-index: 10;
+            transition: opacity 0.5s ease;
+            opacity: 1;
+        }
+
+        .instructions.hidden {
+            opacity: 0;
+        }
+
+        /* Stile della sedia emoji */
+        .chair {
+            position: absolute;
+            font-size: 50px; /* Dimensione della sedia */
+            cursor: pointer;
+            transform: translate(-50%, -50%); /* Centrata sul dito */
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="instructions" id="info-text">
+        <h1>Chairs</h1>
+        <p>Touch the screen and chairs appear, touch them to make them disappear</p>
+    </div>
+
+    <script>
+        let firstChairPlaced = false;
+
+        document.addEventListener('click', function(event) {
+            // Se clicco su una sedia, la rimuovo e basta
+            if (event.target.classList.contains('chair')) {
+                event.target.remove();
+                return;
+            }
+
+            // Dissolvenza istruzioni
+            if (!firstChairPlaced) {
+                document.getElementById('info-text').classList.add('hidden');
+                firstChairPlaced = true;
+            }
+
+            // Crea l'emoji
+            const chair = document.createElement('div');
+            chair.classList.add('chair');
+            chair.innerHTML = '🪑';
+            
+            // Posiziona dove tocco
+            chair.style.left = event.clientX + 'px';
+            chair.style.top = event.clientY + 'px';
+
+            document.body.appendChild(chair);
+        });
+    </script>
+</body>
+</html>
